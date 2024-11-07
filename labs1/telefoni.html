@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+    <script>
+      let tel1 = prompt("Vnesi tel 1")
+
+      let tel2 = prompt("Vnesi tel 2")
+
+      let tel1_del1, tel1_del2,tel1_del3;
+      tel1_del1=tel1.slice(0,3);
+      tel1_del2=tel1.slice(3,6);
+      tel1_del3=tel1.slice(6,9);
+
+      let tel2_del1, tel2_del2,tel2_del3;
+
+      tel2_del1=tel2.slice(0,3);
+      tel2_del2=tel2.slice(3,6);
+      tel2_del3=tel2.slice(6,9);
+
+      document.write(tel1_del1+"/"+tel1_del2+"/"+tel1_del3+";"+"<br/>")
+      if(tel1_del1.endsWith("8")){document.write("A1")}
+      else if (tel1_del1.endsWith("5")){document.write("Telekom")}
+      else document.write("Telekabel")
+      document.write("<br/>");
+
+      document.write(tel2_del1+"/"+tel2_del2+"/"+tel2_del3+";"+"<br/>")
+      if(tel2_del1.endsWith("8")){document.write("A1")}
+      else if (tel2_del1.endsWith("5")){document.write("Telekom")}
+      else document.write("Telekabel")
+    </script>
+</body>
+</html>

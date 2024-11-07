@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        let a,b,c;
+
+        a=prompt("prv")
+        b=prompt("vtor")
+        c=prompt("tret")
+
+        a=parseInt(a);
+        b=parseInt(b);
+        c=parseInt(c);
+
+        let rec = prompt("prosek ili medijana")
+
+        if(rec === "prosek"){
+            let rez = (a+b+c) / 3;
+            document.write(rez.toString())
+        }else if(rec === "medijana"){
+            let niza =[ a,b,c];
+            niza.sort();
+            document.write(niza[1]);
+        }else document.write("Invalid input")
+    </script>
+</body>
+</html>
