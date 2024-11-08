@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vtora</title>
+</head>
+<body>
+    <script>
+        function daliEPalindrom(word){
+            let l = word.length;
+            word = word.toLowerCase();
+            for (let i = 0; i <l/2 ; i++) {
+                if(word.charAt(i)!==word.charAt(l-i-1)){
+                    return false;
+                }
+            }
+            return true;
+        }
+        let x = prompt("Vnesi zbor")
+        let counter = 0;
+        let niza = []
+        while(isNaN(x)){
+            x = prompt("Vnesi zbor")
+            if(daliEPalindrom(x)){
+                niza[counter] = x;
+                counter++;
+            }
+        }
+
+    </script>
+</body>
+</html>

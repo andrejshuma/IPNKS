@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <script>
+
+            let x = prompt("Vnesi zbor")
+            let counter = 1;
+            let niza = []
+            niza[0]=x
+
+            while(isNaN(x)){
+                x = prompt("Vnesi zbor")
+                if(!isNaN(x))break;
+                niza[counter] = x
+                counter++;
+            }
+            for (let i = 0; i < niza.length; i++) {
+                niza[i] = niza[i].toLowerCase()
+                niza[i] = niza[i].charAt(0).toUpperCase() + niza[i].slice(1);
+            }
+            for (let i = niza.length-1; i >=0 ; i--) {
+                document.write(niza[i] + " ")
+            }
+        </script>
+</body>
+</html>

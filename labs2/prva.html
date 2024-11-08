@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prva</title>
+</head>
+
+
+<body>
+
+    <h1>Naslov</h1>
+    <script>
+
+
+        let prva = prompt("Vnesi rec:")
+        let vtora = prompt("Vnesi rec:")
+        let treta = prompt("Vnesi rec:")
+
+
+        prva = prva.split(" ");
+        vtora=vtora.split(" ");
+        treta=treta.split(" ");
+
+        let maxZbor = ""
+
+        for (let i = 0; i <prva.length ; i++) {
+            if(prva[i].length>maxZbor.length){
+                maxZbor = prva[i];
+            }
+        }
+
+        for (let i = 0; i <vtora.length ; i++) {
+            if(vtora[i].length>maxZbor.length){
+                maxZbor = vtora[i];
+            }
+        }
+        for (let i = 0; i <treta.length ; i++) {
+            if(treta[i].length>maxZbor.length){
+                maxZbor = treta[i];
+            }
+        }
+
+        alert(maxZbor)
+
+
+    </script>
+</body>
+</html>
