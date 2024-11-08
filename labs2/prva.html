@@ -10,7 +10,14 @@
 
     <h1>Naslov</h1>
     <script>
-
+        function NajdiMax(arr,currMAX ){
+            for (let i = 0; i < arr.length; i++) {
+                if(arr[i].length>currMAX.length){
+                    currMAX = arr[i];
+                }
+            }
+            return currMAX;
+        }
 
         let prva = prompt("Vnesi rec:")
         let vtora = prompt("Vnesi rec:")
@@ -21,24 +28,9 @@
         vtora=vtora.split(" ");
         treta=treta.split(" ");
 
-        let maxZbor = ""
+        let zaedno= prva.concat(vtora,treta)
 
-        for (let i = 0; i <prva.length ; i++) {
-            if(prva[i].length>maxZbor.length){
-                maxZbor = prva[i];
-            }
-        }
-
-        for (let i = 0; i <vtora.length ; i++) {
-            if(vtora[i].length>maxZbor.length){
-                maxZbor = vtora[i];
-            }
-        }
-        for (let i = 0; i <treta.length ; i++) {
-            if(treta[i].length>maxZbor.length){
-                maxZbor = treta[i];
-            }
-        }
+        let maxZbor = NajdiMax(zaedno,"")
 
         alert(maxZbor)
 

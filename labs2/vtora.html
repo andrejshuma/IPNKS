@@ -21,11 +21,14 @@
         let niza = []
         while(isNaN(x)){
             x = prompt("Vnesi zbor")
+            if(!isNaN(x))break
             if(daliEPalindrom(x)){
                 niza[counter] = x;
                 counter++;
             }
         }
+        console.log(niza)
+        alert(counter)
 
     </script>
 </body>
