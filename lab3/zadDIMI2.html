@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dimi2</title>
+  </head>
+  <body>
+    <!-- vnesuvas podolg string ime,prezime,email,broj; 
+      i posle istoto za drug covek, n lugje i za site od niv da se 
+      ispecati samo za posebniot 
+     email i od tie lugje site so se 071 da se dopise vo
+      samiot atribut deka se od telekom -->
+    <script>
+      class Person {
+        constructor(firstName, lastName, email, phone) {
+          this.firstName = firstName;
+          this.lastName = lastName;
+          this.email = email;
+          this.phone = phone;
+        }
+
+        isFromTelekom() {
+          return this.phone.startsWith("071");
+        }
+      }
+
+      let string = prompt("Vnesi podolg string ime,prezime,email,broj");
+
+      let people = string.split(";");
+
+      let arrayPeople = [];
+
+      for (let i = 0; i < people.length; i++) {
+        let info = people[i].split(",");
+        let obj = new Person(info[0], info[1], info[2], info[3]);
+        arrayPeople.push(obj);
+      }
+
+      let email = prompt("Vnesi email provider");
+
+      let filteredPeople = arrayPeople.filter((person) =>
+        person.email.includes(email)
+      );
+
+      filteredPeople.forEach((person) => {
+        document.write(
+          `Name: ${person.firstName} ${person.lastName}, Email: ${person.email}, Phone: ${person.phone}`
+        );
+      });
+
+      let telekomPeople = arrayPeople.filter((person) =>
+        person.isFromTelekom()
+      );
+
+      telekomPeople.forEach((person) => {
+        person.internetProvider = "Telekom";
+        person.phone += " (Telekom)";
+        document.write(
+          `Name: ${person.firstName} ${person.lastName}, Email: ${person.email}, Phone: ${person.phone}`
+        );
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zad1</title>
+</head>
+<body>
+<p id="paragrafce"></p>
+<script>
+    class tim{
+        constructor(ime,code,goals) {
+            this.ime = ime;
+            this.code = code;
+            if(typeof(goals)=="undefined"){
+                this.goals=0;
+            }else this.goals= goals;
+        }
+        toString(){
+            return this.ime+" "+this.code+" "+this.goals+"<br/>"
+        }
+
+    }
+    let imeKod = prompt("Vnesi ime:kod")
+
+    let objArr = []
+
+    while(imeKod!="@"){
+        let a = imeKod.split(":")
+        objArr.push(new tim(a[0],a[1]))
+        imeKod = prompt("Vnesi ime i kod")
+    }
+
+    let string = prompt("Vnesi kod:gol")
+    while(string!="@"){
+        let b = string.split(";")
+        let b1 = b[0].split(":")
+        let b2 = b[1].split(":")
+
+        for (let i = 0; i <objArr.length ; i++) {
+            for (let j = 0; j <b1.length ; j++) {
+                if(objArr[i].code === b1[j]){
+                    objArr[i].goals+= parseInt(b2[j])
+                }
+            }
+        }
+        string = prompt("Vnesi ime i kod")
+    }
+
+    document.getElementById("paragrafce").innerHTML = objArr.toString()
+
+</script>
+</body>
+</html>

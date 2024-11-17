@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dimi1</title>
+  </head>
+  <body>
+    <!-- da se vnesuuvaat broevi tri broevi so zapirak megju niv i za site da isprinta koja vrednost , na kvadrat i dali se parni -->
+
+    <script>
+      let string = prompt("Vnesi tri broevi so zapirak megju niv");
+
+      let numbers = string.split(",");
+      let array = [];
+      for (let i = 0; i < numbers.length; i++) {
+        let obj = {
+          osnoven: numbers[i],
+          kvadrat: numbers[i] ** 2,
+          parnost: numbers[i] % 2 === 0 ? "paren" : "neparen",
+        };
+        array.push(obj);
+      }
+
+      array.forEach((item) => {
+        document.write(
+          `Broj: ${item.osnoven}, Kvadrat: ${item.kvadrat}, Parnost: ${item.parnost}<br>`
+        );
+      });
+    </script>
+  </body>
+</html>
