@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Treta</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+      }
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Buttons</h1>
+
+    <label>Number of buttons</label>
+    <input type="number" />
+
+    <label>Type:</label>
+    <select id="tip">
+      <option>Radio Button</option>
+      <option>Check box</option>
+    </select>
+
+    <button onclick="send(event)">Generate</button>
+    <form id="form"></form>
+    <script>
+      function send(event) {
+        event.preventDefault();
+        let num = document.querySelector("input").value;
+        let tip = document.getElementById("tip").value;
+        let form = document.getElementById("form");
+        form.innerHTML = "";
+
+        for (let i = 0; i < num; i++) {
+          let input = document.createElement("input");
+          let label = document.createElement("label");
+
+          if (tip === "Radio Button") {
+            input.type = "radio";
+          } else {
+            input.type = "checkbox";
+          }
+
+          label.innerText = `${i + 1}`;
+          label.appendChild(input);
+          form.appendChild(label);
+        }
+      }
+    </script>
+  </body>
+</html>

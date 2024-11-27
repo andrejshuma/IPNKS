@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vtora</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      table,
+      thead,
+      tbody,
+      tr,
+      th,
+      td {
+        border-collapse: collapse;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Project Details</h1>
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" /><br /><br />
+
+    <label for="projectName">Project Name:</label>
+    <input type="text" id="projectName" name="projectName" /><br /><br />
+
+    <label for="cost">Cost:</label>
+    <input type="number" id="cost" name="cost" /><br /><br />
+
+    <button type="button" onclick="submit(event)">Submit</button>
+
+    <h1>Project List</h1>
+    <h2>Total Cost: <span id="costs">0</span></h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Project Name</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function submit(event) {
+        event.preventDefault();
+        let author = document.getElementById("author").value;
+        let projectName = document.getElementById("projectName").value;
+        let cost = document.getElementById("cost").value;
+        let totalCost = document.getElementById("costs");
+        totalCost.innerText = parseInt(totalCost.innerText) + parseInt(cost);
+        if (isNaN(parseInt(totalCost.innerText))) {
+          totalCost.innerText = 0;
+        }
+        if (author == "" || projectName == "" || cost == "") {
+          alert("All fields are required!");
+        } else {
+          let table = document.querySelector("table tbody");
+          let row = table.insertRow();
+          let cell1 = row.insertCell(0);
+          let cell2 = row.insertCell(1);
+          let cell3 = row.insertCell(2);
+          let cell4 = row.insertCell(3);
+          let removeButton = document.createElement("button");
+          removeButton.innerText = "Remove";
+          removeButton.onclick = function () {
+            table.deleteRow(row.rowIndex - 1);
+            totalCost.innerText =
+              parseInt(totalCost.innerText) - parseInt(cost);
+          };
+          cell1.innerText = author;
+          cell2.innerText = projectName;
+          cell3.innerText = cost;
+          cell4.appendChild(removeButton);
+        }
+      }
+    </script>
+  </body>
+</html>
