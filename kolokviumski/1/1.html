@@ -1,10 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Osiguruvanje za vozila</title>
+    <style>
+      .item {
+        width: 200px;
+        height: 400px;
+        display: inline-block;
+        text-align: center;
+        margin: 20px;
+      }
+      .red {
+        background-color: red;
+      }
+      .green {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Osiguruvanje za vozila</h1>
 
-</body>
+    <div>Ime: <input type="text" id="name" /></div>
+    <div>Prezime: <input type="text" id="surname" /></div>
+    <div>Tablica: <input type="text" id="tablica" /></div>
+    <div>Starost: <input type="text" id="age" /></div>
+    <div>
+      Nezgoda:
+      Da <input type="radio" id="da" name="nezgoda" value="Da" />
+      Ne <input type="radio" id="ne" name="nezgoda" value="Ne" />
+    </div>
+    <div>
+      <button onclick="generate()">Generiraj smetka</button>
+    </div>
+    <h2>Smetki</h2>
+    <p>Vkupno smetki za plakjanje: <span id="counter"></span></p>
+
+    <div id="container"></div>
+    <h3>Izbrishani</h3>
+    <div id="izbrishani"></div>
+    <script>
+      let container = document.getElementById("container");
+      function generate() {
+        let name = document.getElementById("name");
+        let surname = document.getElementById("surname");
+        var tablica = document.getElementById("tablica");
+        let starost = document.getElementById("age");
+        let nezgoda = document.querySelector('input[name="nezgoda"]:checked').value;
+
+        let price = 3000;
+
+        if (
+          name.value.length === 0 ||
+          surname.value.length === 0 ||
+          tablica.value.length === 0 ||
+          starost.value.length === 0 ||
+          nezgoda.length === 0
+        ) {
+          alert("Vnesi gi site");
+          return;
+        }
+
+        let format = true;
+
+        if (tablica.value.length !== 8) format = false;
+
+        if (
+          !isNaN(tablica.value.charAt(0)) ||
+          !isNaN(tablica.value.charAt(1)) ||
+          isNaN(tablica.value.charAt(2)) ||
+          isNaN(tablica.value.charAt(3)) ||
+          isNaN(tablica.value.charAt(4)) ||
+          isNaN(tablica.value.charAt(5)) ||
+          !isNaN(tablica.value.charAt(6)) ||
+          !isNaN(tablica.value.charAt(7))
+        ) {
+          format = false;
+        }
+
+        if (!format) {
+          alert("Greshen format na tablica");
+          return;
+        }
+        let zlatna = false;
+        if (
+          tablica.value.charAt(2) === tablica.value.charAt(3) &&
+          tablica.value.charAt(3) === tablica.value.charAt(4) &&
+          tablica.value.charAt(4) === tablica.value.charAt(5)
+        ) {
+          zlatna = true;
+        }
+
+        if (zlatna) price += 1000;
+        if (nezgoda === "Da") price += 500;
+
+        if (parseInt(starost.value) > 30) {
+          var item =
+            "<div class='item red' > <p>" +
+            name.value +
+            "</p><p>" +
+            tablica.value +
+            "</p> <p>Soobrakjaki: " +
+            nezgoda +
+            "</p>  <p>Starost: " +
+            starost.value +
+            "</p>  <p>Za plakjanje: " +
+            price +
+            "</p> <div><button onclick='plati(this)'>Plati</button><button onclick='izbrishi(this)'>Izbrishi</button></div>  </div>";
+        } else {
+          var item =
+            "<div class='item green'> <p>" +
+            name.value +
+            "</p><p>" +
+            tablica.value +
+            "</p> <p>Soobrakjaki: " +
+            nezgoda +
+            "</p>  <p>Starost: " +
+            starost.value +
+            "</p>  <p>Za plakjanje: " +
+            price +
+            "</p> <div><button onclick='plati(this)'>Plati</button><button onclick='izbrishi(this)'>Izbrishi</button></div>  </div>";
+        }
+        container.innerHTML += item;
+      }
+      function izbrishi(obj) {
+        obj.parentNode.parentNode.remove();
+        document.getElementById("izbrishani").appendChild(obj.parentNode.parentNode)
+      }
+      function plati(obj) {
+        obj.parentNode.parentNode.querySelectorAll("button").forEach((button) => {
+            button.disabled = true;
+          });
+      }
+    </script>
+  </body>
 </html>
