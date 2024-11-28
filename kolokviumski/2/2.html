@@ -2,9 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Online Classes</title>
+    <style>
+        table,th,tr,td{
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        .student{
+            background-color: lightblue;
+        }
+        .teacher{
+            background-color: green;
+        }
+    </style>
 </head>
 <body>
+    <h1>Online Classes</h1>
+
+    <div>Name and Surname: <input type="text" id="name"></div>
+    <div>Email: <input type="email" id="email"></div>
+    <div>Age: <input type="text" id="age"></div>
+    <div>Username: <input type="text" id="user"></div>
+    <div>Password: <input type="password" id="password"></div>
+    <div>Role: <select id="role"><option >teacher</option><option >student</option></select></div>
+
+    <div><button onclick="add()">Add</button></div>
+
+    <p>Available teachers: <span id="counter">0</span></p>
+
+    <h2>Users</h2>
+
+    <table id="tabela">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script>
+        let iskoristeni = ""
+        var counter=0
+        function add(){
+            let name = document.getElementById("name").value
+            let email = document.getElementById("email").value
+            let age = document.getElementById("age").value
+            let user = document.getElementById("user").value
+            let password = document.getElementById("password").value
+            let role = document.getElementById("role").value
+
+            if(name.length===0 || email.length===0 || age.length===0 || user.length===0 || password.length===0 || role.length===0){
+                alert("Ne se vneseni site")
+                return;
+            }
+            if(iskoristeni.includes(user)){
+                alert("Ima vekje takov korisnik")
+                return;
+            }
+
+            if(password.length<10){
+                alert("Treba pogolem password")
+                return;
+            }
+            let tmp = password.toLowerCase()
+            if(tmp===password){
+                alert("Treba barem edna golema bukva")
+                return;
+            }
+            let flag = false;
+            for (let i = 0; i <10 ; i++) {
+                if(password.includes(""+i+"")){
+                    flag=true;
+                }
+            }
+            if(!flag){
+                alert("Treba barem edna cifra vo password")
+                return;
+            }
+            if(parseInt(age)<18 && role==="teacher"){
+                alert("Ne moze nastavnik da ima pod 18 godini")
+                return;
+            }
+            iskoristeni = iskoristeni + " " + user
+
+            let tabela = document.getElementById("tabela")
+
+            if(role==="student"){
+
+                var redica = "<tr class='student'><td>"+name+"</td><td>"+user+"</td><td>"+email+"</td><td>"+age+"</td><td>"+role+"</td><td></td></tr>"
+            }
+            else{
+                counter =document.getElementById('counter').textContent
+                counter = parseInt(counter) + 1
+
+                document.getElementById('counter').innerHTML= counter
+                var redica = "<tr class='teacher'><td>"+name+"</td><td>"+user+"</td><td>"+email+"</td><td>"+age+"</td><td>"+role+"</td><td><button onclick='hire(this)'>Hire</button></td></tr>"
+            }
+            tabela.innerHTML+=redica
+
+
+
+        }
+        function hire(obj){
+            counter =document.getElementById('counter').textContent
+            counter = parseInt(counter) - 1
+            document.getElementById('counter').innerHTML= counter
+
+            let redica = obj.parentNode.parentNode
+            redica.style.backgroundColor = "grey"
+
+            obj.remove()
+        }
+    </script>
 
 </body>
 </html>
