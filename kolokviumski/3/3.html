@@ -1,10 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Online Shop</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .forma {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .container {
+        display: flex;
+        gap: 140px;
+      }
+      table,
+      thead,
+      tr,
+      th,
+      td {
+        border-collapse: collapse;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Online Shop</h1>
 
-</body>
+    <div class="forma">
+      <label> Name and Surname:</label>
+      <input type="text" id="nameAndSurname" />
+
+      <label>Item: </label>
+      <input type="text" id="item" />
+
+      <label>Item code:</label>
+      <input type="text" id="code" />
+
+      <label>Item desc:</label>
+      <input type="text" id="desc" />
+
+      <label>Price:</label>
+      <input type="number" id="num" />
+
+      <label>Used?</label>
+      <select id="used">
+        <option>used</option>
+        <option>never-used</option>
+      </select>
+
+      <button onclick="add(event)">Add</button>
+
+      <p>Active items: <span id="counter"> </span></p>
+    </div>
+
+    <div class="container">
+      <div class="tabela">
+        <h2>Unused items</h2>
+        <table id="unusedTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Code</th>
+              <th>Number</th>
+              <th>Desc</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tabela">
+        <h2>Used items</h2>
+        <table id="usedTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Code</th>
+              <th>Number</th>
+              <th>Desc</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      let kodovi =" "
+      var counter =0;
+      document.getElementById("counter").innerHTML=counter
+      var usedTable = document.getElementById("usedTable")
+      var neverUsedTable = document.getElementById("unusedTable")
+
+      function add(event){
+          event.preventDefault();
+          let name = document.getElementById("nameAndSurname")
+          let item = document.getElementById("item")
+          let code = document.getElementById("code")
+          let desc = document.getElementById("desc")
+          let price = document.getElementById("num")
+          let used = document.getElementById("used")
+
+          counter = parseInt(document.getElementById("counter").innerHTML);
+
+
+
+          if(name.value ==="" || item.value==="" || code.value==="" || desc.value==="" || price.value==="" || used.value==="" ){
+              alert("Greshen vnes")
+          }
+          else{
+              if(kodovi.includes(code.value)){
+                  alert("Vekje go imame ovoj kod")
+              }
+              else if ( parseInt(price.value)<=0){
+                  alert("Nevalidna cena")
+              }
+              else{
+                            kodovi = kodovi + " " + code.value;
+                            counter = counter + 1;
+                            document.getElementById("counter").innerHTML = counter;
+                            let row;
+                            if (used.value === "used") {
+                                row = usedTable.insertRow();
+                            } else {
+                                row = neverUsedTable.insertRow();
+                            }
+                            let cell0 = row.insertCell(0);
+                            let cell1 = row.insertCell(1);
+                            let cell2 = row.insertCell(2);
+                            let cell3 = row.insertCell(3);
+                            let cell4 = row.insertCell(4);
+                            let cell5 = row.insertCell(5);
+          
+                            cell0.innerText = name.value;
+                            cell1.innerText = item.value;
+                            cell2.innerText = parseInt(price.value) + parseInt(price.value) * 0.10;
+                            cell3.innerText = code.value;
+                            cell4.innerText = code.value.replace(/[0-9!]/g, '');
+          
+                            let soldButton = document.createElement("button");
+                            soldButton.innerText = "Sold";
+                            soldButton.onclick = function () {
+                                row.style.backgroundColor = "yellow";
+                                soldButton.style.display = "none";
+                                counter = counter - 1;
+                                document.getElementById("counter").innerHTML = counter;
+                            };
+                            cell5.appendChild(soldButton);
+                        }
+                    }
+                }
+              </script>
+            </body>
+          </html>
+    </script>
+  </body>
 </html>
