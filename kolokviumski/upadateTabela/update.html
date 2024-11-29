@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vtora</title>
+    <style>
+        input{
+            width: 80px;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        table,
+        thead,
+        tbody,
+        tr,
+        th,
+        td {
+            border-collapse: collapse;
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Project Details</h1>
+
+<label for="author">Author:</label>
+<input type="text" id="author" name="author" /><br /><br />
+
+  <label for="email">Email</label>
+<input  id="email" type="email"><br /><br />
+
+<label for="projectName">Project Name:</label>
+<input type="text" id="projectName" name="projectName" /><br /><br />
+
+<label for="cost">Cost:</label>
+<input type="number" id="cost" name="cost" /><br /><br />
+
+<button type="button" onclick="submit()">Submit</button>
+
+<h1>Project List</h1>
+<h2>Total Cost: <span id="costs">0</span></h2>
+
+<table id="tabela">
+    <tr>
+        <th>Author</th>
+        <th>Email</th>
+        <th>Project Name</th>
+        <th>Cost</th>
+    </tr>
+</table>
+<script>
+    function isValidEmail(email) {
+
+        let parts = email.split("@");
+
+        if(parts[1]!=="gmail.com" ||parts[1]!=="yahoo.com" || parts[1]!=="outlook.com")return false
+
+        return parts.length === 2 &&
+            parts[0].length > 0 &&
+            parts[1].includes('.') &&
+            parts[1].indexOf('.') !== 0 &&
+            parts[1].indexOf('.') !== parts[1].length - 1;
+    }
+    function removee(obj){
+        let red = obj.parentNode.parentNode;
+        let totalCost = parseInt(document.getElementById("costs").innerHTML)
+        let tmp = red.querySelector(".pari").innerHTML
+        totalCost= totalCost -tmp
+        document.getElementById("costs").innerHTML=totalCost.toString();
+        red.remove()
+    }
+    function submit(){
+        let author = document.getElementById("author").value
+        let email = document.getElementById("email").value
+        let projectName = document.getElementById("projectName").value
+        let cost = document.getElementById("cost").value
+
+        let totalCost = parseInt(document.getElementById("costs").innerHTML)
+
+
+        if(author.length===0 || email.length===0 || projectName.length===0|| cost.length===0 ){
+            alert("Vnesi gi site")
+            return
+        }
+
+        if(isValidEmail(email)){
+            alert("Nevaliden mail")
+        }
+
+        let redica = "<tr><td>"+author+"</td><td>"+email+"</td><td>"+projectName+"</td><td class='pari'>"+cost+"</td><td><button onclick='removee(this)'>Remove</button><button onclick='update(this)'>Update</button></td></tr>"
+        let tabela = document.getElementById("tabela")
+        tabela.innerHTML+=redica
+
+        totalCost= totalCost + parseInt(cost)
+        document.getElementById("costs").innerHTML=totalCost.toString();
+    }
+    function update(obj){
+        let redica = obj.parentNode.parentNode;
+        let tmp = redica.querySelector(".pari").innerHTML
+        let nova = "<tr><td ><input class='name' type='text'></td><td><input class='email' type='text'></td><td><input class='project' type='text'></td><td ><input class='pari'  type='text'></td><td><button onclick='removee(this)'>Remove</button><button onclick='save(this)'>Save</button></td></tr>"
+        redica.innerHTML =nova
+
+        let totalCost = parseInt(document.getElementById("costs").innerHTML)
+
+        totalCost= totalCost - tmp
+        document.getElementById("costs").innerHTML=totalCost.toString();
+
+    }
+    function save(obj){
+        let redica = obj.parentNode.parentNode;
+        let name = redica.querySelector(".name").value
+        let email = redica.querySelector(".email").value
+        let project = redica.querySelector(".project").value
+        let pari = redica.querySelector(".pari").value
+
+        let nova = "<tr><td>"+name+"</td><td>"+email+"</td><td>"+project+"</td><td class='pari'>"+pari+"</td><td><button onclick='removee(this)'>Remove</button><button onclick='update(this)'>Update</button></td></tr>"
+        redica.innerHTML = nova;
+
+        let totalCost = parseInt(document.getElementById("costs").innerHTML)
+
+        totalCost= totalCost +parseInt(pari)
+        document.getElementById("costs").innerHTML=totalCost.toString();
+    }
+</script>
+</body>
+</html>
