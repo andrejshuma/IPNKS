@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Loto</title>
+    <style>
+      .container {
+        display: flex;
+      }
+      .prv {
+        margin: 50px;
+        width: 300px;
+      }
+      .item {
+        height: 400px;
+        width: 250px;
+        border: 1px solid black;
+        margin: 20px;
+        display: inline-block;
+        text-align: center;
+        padding: 20px;
+      }
+      .krug{
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 100%;
+        padding: 5px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>National Lottery Game</h1>
+
+    <div class="container">
+      <div class="prv">
+        <h2>Assign form</h2>
+        <div>Name and Surname: <input type="text" id="name" /></div>
+        <div>Ticket amount: <input type="text" id="amount" /></div>
+        <div>Code: <input type="text" id="code" /></div>
+        <div>Combination: <input type="text" id="combination" /></div>
+        <div>
+          Bonus:
+          <select id="bonus">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
+        <button onclick="add()">Add</button>
+      </div>
+      <div class="prv">
+        <h2>Lucky Numbers</h2>
+        <div id="luckyComb"></div>
+        <button onclick="generate()">Get weekly combination</button>
+        <p>Total wins: <span id="total"></span></p>
+      </div>
+    </div>
+    <div id="karticki"></div>
+    <script>
+      let prethodniShifri = "";
+      var vkupnoKombinacii = 0;
+      function add() {
+        let name = document.getElementById("name");
+        let amount = document.getElementById("amount");
+        let code = document.getElementById("code");
+        let combination = document.getElementById("combination");
+        let bonus = document.getElementById("bonus").value;
+
+
+        if (
+          name.length === 0 ||
+          amount.length === 0 ||
+          code.length === 0 ||
+          combination.length === 0
+        ) {
+          alert("Invalid input");
+          return;
+        }
+
+        if (prethodniShifri.includes(code.value)) {
+          alert("Vekje ima takva shifra");
+          return;
+        }
+
+        let validna = true;
+
+        if (code.value.includes("!") || code.value.includes("%")) {
+          validna = false;
+        }
+
+        for (let i = 0; i < 10; i++) {
+          if (code.value.includes(i)) {
+            validna = false;
+            break;
+          }
+        }
+
+        if (!validna) {
+          alert("Nevalidna shifra");
+          return;
+        }
+        combination = combination.value.split(",")
+
+        let combinationStr=""
+
+        for(let i = 0; i<7; i++){
+          combinationStr += "<p class='krug'> "+combination[i] +"</p>"
+        }
+
+        let item =
+          "<div class='item' title='"+bonus+"'><p>Name: " +
+          name.value +
+          "</p><p>Code: " +
+          code.value +
+          "</p><p class='combination'>Combination: " +
+          combinationStr +
+          "</p><p>Amount: <span class='amount'>"+amount.value+"</span></p><p class='total'></p></div>";
+        let ovde = document.getElementById("karticki");
+        ovde.innerHTML += item;
+        prethodniShifri = prethodniShifri + " " + code.value;
+        vkupnoKombinacii++;
+      }
+
+      function generate() {
+        if (vkupnoKombinacii < 5) {
+          alert("Vnesi barem 5 kombinacii");
+          return;
+        }
+        var dobitnaKombinacija = [];
+
+        let stringWinCombo = ""
+
+        for (let i = 0; i < 7; i++) {
+          let tmp = Math.floor(Math.random() * 31) + 1;
+          stringWinCombo+= "<p class='krug'>"+tmp+"</p>"
+        }
+        let mestoZaDobitna = document.getElementById("luckyComb");
+        mestoZaDobitna.innerHTML += stringWinCombo
+
+        check_combinations()
+      }
+
+      function check_combinations(){
+          let dobitnaKomb = document.getElementById("luckyComb").getElementsByClassName("krug")
+          let items = document.getElementById("karticki").getElementsByClassName("item")
+
+        for (let i = 0; i <5 ; i++) {
+          let dobitni = 0;
+          let nums = items[i].getElementsByClassName("krug")
+          for (let j = 0; j < 7; j++) {
+            for (let k = 0; k <7 ; k++) {
+                if(nums[k].innerHTML===dobitnaKomb[j].innerHTML){
+                  dobitni++;
+                }
+            }
+          }
+          if(dobitni<=3){
+            items[i].style.backgroundColor="yellow"
+          }
+          else if(dobitni<=5){
+            items[i].style.backgroundColor="blue"
+          }
+          else if(dobitni<=7){
+            items[i].style.backgroundColor="green"
+          }
+
+          let bonus = items[i].getAttribute("title")
+
+          console.log(bonus)
+          let itemTotalWin = dobitni*30
+          if(bonus==="Yes"){
+            itemTotalWin+=500
+          }
+          let amount = items[i].getElementsByClassName("amount")[0].innerText;
+          itemTotalWin+= parseInt(amount)
+
+          items[i].getElementsByClassName("total")[0].innerHTML=itemTotalWin.toString();
+          items[i].innerHTML+= "<button onclick='izbrishi(this)'>Get Paid</button>"
+
+          let TotalWinMesto = document.getElementById("total")
+          let currentTotal = parseInt(TotalWinMesto.innerHTML) || 0;
+          let updatedTotal = currentTotal+itemTotalWin
+          TotalWinMesto.innerHTML=updatedTotal
+        }
+      }
+
+      function izbrishi(obj){
+        let item = obj.parentNode
+        let itemValue = item.getElementsByClassName("total")[0].innerHTML
+        let total = document.getElementById("total").innerHTML
+        total -= itemValue
+        document.getElementById("total").innerHTML=total;
+
+        item.remove()
+      }
+    </script>
+  </body>
+</html>

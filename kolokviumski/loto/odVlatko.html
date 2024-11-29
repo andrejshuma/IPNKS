@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #lucky_numbers, #forma{
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+            /* za da se na isto nivo */
+        }
+        #cards > div{
+            display: inline-block;
+            border: 1px solid black;
+            width: 300px;
+        }
+        .krug{
+            display: inline-block;
+            border: 1px solid black;
+            border-radius: 100%;
+            padding: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Lottery Game</h1>
+<div id="forma">
+    <h2>Form</h2>
+    <div>
+        Name: <input type="text" id="name">
+    </div>
+    <div>
+        Amount: <input type="text" id="amount">
+    </div>
+    <div>
+        Code: <input type="text" id="code">
+    </div>
+    <div>
+        Combination: <input type="text" id="comb">
+    </div>
+    <div>
+        Bonus: <select id="bonus">
+        <option>Yes</option>
+        <option>No</option>
+    </select>
+    </div>
+    <button onclick="submit()">Add</button>
+</div>
+<div id="lucky_numbers">
+    <h2>Weekly combinations</h2>
+    <div id="win_comb"></div>
+    <button onclick="get_comb()">Get weekly combinations</button>
+    <p>Total: <span id="total_win"></span></p>
+</div>
+<div id="cards">
+
+</div>
+<script>
+    let numberCards = 0;
+    function submit(){
+        let name = document.getElementById('name').value;
+        let amount = document.getElementById('amount').value;
+        let code = document.getElementById('code').value;
+        let comb = document.getElementById('comb').value;
+        let bonus = document.getElementById('bonus').value;
+        if(name.length == 0 || amount.length == 0 || code.length == 0 || comb.length == 0){
+            alert("Please fill all fields");
+            return;
+        }
+        let card = document.getElementById(code);
+        if(card!=null){
+            alert("Veke postoi ovoj kod");
+            return;
+        }
+        for(let i = 0; i<10; i++){
+            // indexOf vraka -1 ako ne postoi index za toj el vo stringot = ne postoi vo nizata
+            if(code.indexOf(i) != -1){
+                alert("Nevaliden");
+                return;
+            }
+        }
+        if(code.indexOf("!")!=-1 || code.indexOf("%")!=-1){
+            alert("Nevaliden");
+            return;
+        }
+        // mora vaka za da se dobie niza od broevi od kombinacijata
+        comb = comb.split(",");
+        let combination_string = "";
+        for(let i = 0; i<7; i++){
+            combination_string += "<p class='krug'> "+comb[i] +"</p>"
+        }
+        let newCard = "<div title ='"+bonus+"' class= 'karticka' id='" +code+ "'> <p>Name: "+name+"</p> <p>Code: "+code+"</p><div>Combination: "+combination_string+"</div><p class='amount'>Amount: "+amount+"</p> <p>Total win: <span class='win'></span></p><p</div>";
+        let cards = document.getElementById('cards');
+        cards.innerHTML += newCard;
+        numberCards+=1;
+    }
+    function get_comb(){
+        // if(numberCards<5){
+        //     return;
+        // }
+        let win_comb = document.getElementById('win_comb');
+        for(let i = 0; i<7; i++){
+            let broj = parseInt((Math.random()*31)+1);
+            let exist = document.getElementById(broj);
+            if(exist!=null){
+                i--;
+                continue;
+            }
+            win_comb.innerHTML += "<p class='krug' id='"+broj+"'> "+ broj +"</p>";
+        }
+        check_combinations();
+    }
+    function check_combinations(){
+        let win_comb = document.getElementById('win_comb').getElementsByClassName("krug");
+        let cards = document.getElementById('cards').getElementsByClassName("karticka");
+        let dobitni = 0;
+        for(let i = 0; i<5; i++){
+            dobitni = 0;
+            let card_comb = cards[i].getElementsByClassName("krug");
+            for(let j = 0; j<7; j++){
+                for(let k = 0; k<7; k++){
+                    if(win_comb[j].innerHTML == card_comb[k].innerHTML){
+                        dobitni+=1;
+                    }
+                }
+            }
+            if(dobitni<=3){
+                cards[i].style.background="yellow";
+            } else if (dobitni<=5){
+                cards[i].style.background="blue";
+            } else {
+                cards[i].style.background="green";
+            }
+            let bonus = cards[i].getAttribute("title");
+            console.log(bonus)
+            let card_totalWin = dobitni*30;
+            if(bonus=="Yes"){
+                card_totalWin+=500;
+            }
+            let uplata=cards[i].getElementsByClassName("amount")[0].innerHTML.split(":")[1];
+            card_totalWin+=parseInt(uplata);
+            cards[i].getElementsByClassName("win")[0].innerHTML = card_totalWin;
+            cards[i].innerHTML+="<button onclick='izbrisiOvoj(this)'>Get paid</button>"
+            let totalWinElement = document.getElementById("total_win");
+            let currentTotal = parseInt(totalWinElement.innerHTML) || 0;
+            let updatedTotal = currentTotal + card_totalWin;
+            totalWinElement.innerHTML = updatedTotal;
+        }
+    }
+    function izbrisiOvoj(obj){
+        let karticka = obj.parentNode;
+        document.getElementById("total_win").innerHTML-=karticka.getElementsByClassName("win")[0].innerHTML;
+        karticka.remove();
+    }
+</script>
+</body>
+</html>
